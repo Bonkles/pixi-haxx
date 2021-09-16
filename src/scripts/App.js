@@ -1,15 +1,18 @@
 import * as PIXI from "pixi.js";
-import Loader from './Loader'; 
+import Loader from './Loader';
 
-class App { 
+class App {
   run() {
-    this.app = new PIXI.Application({resizeTo: window}); 
-    this.loader = new Loader(this.app.loader) ; 
-    this.loader.preload(); 
-    console.log(this.app); 
+    this.app = new PIXI.Application({resizeTo: window});
+    this.loader = new Loader(this.app.loader) ;
+    this.loader.preload().then(() => this.start());
 
-    document.body.appendChild(this.app.view); 
+    document.body.appendChild(this.app.view);
+  }
+
+  start() {
+    console.log("The game started.")
   }
 }
 
-export default App; 
+export default App;
