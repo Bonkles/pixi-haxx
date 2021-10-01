@@ -1,7 +1,7 @@
 
 import * as PIXI from "pixi.js";
 import { Globals } from "./Globals";
-
+import { PuzzlePiece } from "./PuzzlePiece";
 export class PuzzleGrid {
     constructor(parentWidth, parentHeight) {
         this.container = new PIXI.Container();
@@ -25,9 +25,22 @@ export class PuzzleGrid {
             }
         }
 
-    onTouchStart() {
+    onTouchStart(e) {
+        this.touchPosition = { x: e.data.Globals.x, y: e.data.Globals.y }
+        this.dragging = true;
+    }
+
+    onTouchMove(e) {
+        if (!this.dragging) {
+            return;
+        }
+
+        const currentPosition = { x: e.data.Globals.x, y: e.data.Globals.y }
+        const offsetX = currentPosition.x - this.touchPosition.x;
+        const offsetY = currentPosition.y - this.touchPosition.y;
 
     }
+
     createPuzzle() {
 
         let puzzlePieceKeys = Object.keys(Globals.resources).filter(k => k.startsWith("puzzle"));
@@ -37,18 +50,10 @@ export class PuzzleGrid {
         let i = 1;
         const pieceSize = Math.min(this.parentWidth, this.parentHeight) / this.gridSize;
         for (let key of puzzlePieceKeys) {
-            let sprite = new PIXI.Sprite(Globals.resources[key].texture);
-            sprite.x = x;
-            sprite.y = y;
+            let piece = new PuzzlePiece(key, x, y, pieceSize);
 
-            sprite.height = sprite.width = pieceSize;
-            sprite.anchor.set(0);
-            // sprite.interactive = true;
-            // sprite.on("mousedown",
-            //     this.onTouchStart, this
-            // );
 
-            this.container.addChild(sprite);
+            this.container.addChild(piece.sprite);
 
 
             if (i % 3 === 0) {
