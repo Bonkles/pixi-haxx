@@ -8,7 +8,7 @@ export class PuzzleGrid {
         this.container.x = 0
         this.container.y = 0
         this.gridSize = 3;
-        this.margin = 10;
+        this.margin = 5;
         this.parentWidth = parentWidth - this.gridSize * this.margin;
         this.parentHeight = parentHeight - this.gridSize * this.margin;
 
@@ -50,14 +50,14 @@ export class PuzzleGrid {
         let i = 1;
         const pieceSize = Math.min(this.parentWidth, this.parentHeight) / this.gridSize;
         for (let key of puzzlePieceKeys) {
-            let piece = new PuzzlePiece(key, x, y, pieceSize);
+            let piece = new PuzzlePiece(key, {x: x, y: y}, pieceSize);
 
 
             this.container.addChild(piece.sprite);
 
 
             if (i % 3 === 0) {
-                y += this.parentWidth / this.gridSize + this.margin;
+                y += this.parentHeight / this.gridSize + this.margin;
                 x = this.margin;
             } else {
                 x += this.parentHeight / this.gridSize + this.margin;
