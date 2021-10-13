@@ -8,7 +8,7 @@ export class PuzzlePiece {
         this.sprite.x = field.x;
         this.sprite.y = field.y;
         this.field = field;
-        
+
         this.sprite.height = this.sprite.width = size;
         this.sprite.anchor.set(0);
 
@@ -19,6 +19,8 @@ export class PuzzlePiece {
         this.sprite.interactive = true;
         this.sprite.on("mousedown", this.onTouchStart, this);
         this.sprite.on("mousemove", this.onTouchMove, this);
+        this.sprite.on("mouseupoutside", this.onTouchEnd, this);
+        this.sprite.on("mouseup", this.onTouchEnd, this);
     }
 
     onTouchStart(e) {
@@ -35,4 +37,14 @@ export class PuzzlePiece {
         this.sprite.x = this.field.x + offsetX;
         this.sprite.y = this.field.y + offsetY;
     }
+
+    onTouchEnd(e) {
+        if (!this.draggingState) return;
+
+        this.sprite.x = this.field.x;
+        this.sprite.y = this.field.y;
+
+        this.draggingState = false;
+    }
+
 }
