@@ -5,13 +5,13 @@ import { PuzzlePiece } from "./PuzzlePiece";
 export class PuzzleGrid {
     constructor(parentWidth, parentHeight) {
         this.container = new PIXI.Container();
+        this.container.sortableChildren = true;
         this.container.x = 0
         this.container.y = 0
         this.gridSize = 3;
         this.margin = 5;
         this.parentWidth = parentWidth - this.gridSize * this.margin;
         this.parentHeight = parentHeight - this.gridSize * this.margin;
-
         this.createPuzzle();
     }
 
@@ -41,7 +41,25 @@ export class PuzzleGrid {
 
     }
 
+    handleDragEnd(piece) {
+        const pieceToReplace = this.pieces.find(item =>
+            item !== piece &&
+            //dragged piece's center should be within the boundaries of the  piece it is replacing.
+            piece.sprite.x >= item.left && piece.sprite.x <= item.right &&
+            piece.sprite.y >= item.top && piece.sprite.y <= item.bottom
+        );
+
+        if (pieceToReplace) {
+            const replaceField = pieceToReplace.field;
+            pieceToReplace.setField(piece.field);
+            piece.setField(replaceField);
+        } else {
+            piece.reset();
+        }
+    }
+
     createPuzzle() {
+        this.pieces = [];
 
         let puzzlePieceKeys = Object.keys(Globals.resources).filter(k => k.startsWith("puzzle"));
         this.shuffle(puzzlePieceKeys);
@@ -52,7 +70,9 @@ export class PuzzleGrid {
         for (let key of puzzlePieceKeys) {
             let piece = new PuzzlePiece(key, {x: x, y: y}, pieceSize);
 
+            piece.on("dragend", () => this.handleDragEnd(piece));
 
+            this.pieces.push(piece);
             this.container.addChild(piece.sprite);
 
 
