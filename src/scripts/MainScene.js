@@ -6,6 +6,10 @@ export class MainScene {
         this.container = new PIXI.Container();
         this.createBackground();
         this.createPuzzleGrid();
+        Globals.resources.music.sound.play({
+            loop: true,
+            volume: .3
+        });
     }
 
     createBackground() {

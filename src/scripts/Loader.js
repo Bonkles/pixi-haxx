@@ -12,7 +12,7 @@ export class Loader {
             for (let key in this.resources) {
                 this.loader.add(key, this.resources[key]);
             }
-    
+
             this.loader.load((loader, resources) => {
                 Globals.resources = resources;
                 resolve();
