@@ -42,11 +42,16 @@ export class PuzzleGrid {
     }
 
     handleDragEnd(piece) {
+
+        const offset =  this.parentHeight / this.gridSize / 2;
+
+        const spriteCenterX = piece.sprite.x + offset;
+        const spriteCenterY = piece.sprite.y + offset;
         const pieceToReplace = this.pieces.find(item =>
             item !== piece &&
             //dragged piece's center should be within the boundaries of the  piece it is replacing.
-            piece.sprite.x >= item.left && piece.sprite.x <= item.right &&
-            piece.sprite.y >= item.top && piece.sprite.y <= item.bottom
+            spriteCenterX>= item.left && spriteCenterX<= item.right &&
+            spriteCenterY >= item.top && spriteCenterY <= item.bottom
         );
 
         if (pieceToReplace) {
