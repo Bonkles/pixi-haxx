@@ -66,6 +66,19 @@ export class PuzzlePiece extends PIXI.utils.EventEmitter{
     reset() {
         const tween = new TWEEN.Tween(this.sprite);
         tween.to({ x: this.field.x, y: this.field.y }, 300);
+
+        tween.onStart(() => {
+            console.log("tween started");
+            this.sprite.zIndex = 1;
+        })
+        tween.onUpdate(() => {
+            console.log("tween updated");
+        })
+        tween.onComplete(() => {
+            console.log("tween completed");
+            this.sprite.zIndex = 0;
+        })
+        tween.easing(TWEEN.Easing.Back.Out);
         tween.start();
         // this.sprite.x = this.field.x;
         // this.sprite.y = this.field.y;
