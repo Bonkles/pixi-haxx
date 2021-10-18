@@ -1,7 +1,6 @@
 import * as PIXI from "pixi.js";
 import { Globals } from "./Globals";
-
-
+import TWEEN from "@tweenjs/tween.js";
 export class PuzzlePiece extends PIXI.utils.EventEmitter{
     constructor(id, field, size) {
         super();
@@ -38,7 +37,6 @@ export class PuzzlePiece extends PIXI.utils.EventEmitter{
 
         this.sprite.x = this.field.x + offsetX;
         this.sprite.y = this.field.y + offsetY;
-        console.log(`new coords: [${this.sprite.x}, ${this.sprite.y}]`);
 
     }
 
@@ -66,8 +64,11 @@ export class PuzzlePiece extends PIXI.utils.EventEmitter{
     }
 
     reset() {
-        this.sprite.x = this.field.x;
-        this.sprite.y = this.field.y;
+        const tween = new TWEEN.Tween(this.sprite);
+        tween.to({ x: this.field.x, y: this.field.y }, 300);
+        tween.start();
+        // this.sprite.x = this.field.x;
+        // this.sprite.y = this.field.y;
         this.sprite.zIndex = 0;
     }
 
